@@ -7,7 +7,6 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern"
-
   },
   "dependencies": {
     "expo": "~38.0.8",
