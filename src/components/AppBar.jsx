@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.barBackground,
     paddingBottom: 15,
     paddingLeft: 10,
+    marginBottom: 10
   }
 });
 
