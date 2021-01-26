@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Link } from 'react-router-native';
 
+import theme from '../theme';
 import Text from './Text';
 
 const styles = StyleSheet.create({
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     paddingHorizontal: 15,
     paddingVertical: 20,
-    color: 'white',
+    color: theme.colors.textSecondary,
   },
 });
 

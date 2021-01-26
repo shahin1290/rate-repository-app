@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
     paddingTop: 2,
     padding: 4,
-    color: 'white',
     alignSelf: 'flex-start',
     borderRadius: 3,
   },
@@ -58,13 +57,13 @@ const RepositoryItem = ({ item }) => {
           </Text>
           <Text style={styles.separator}> {item.description}</Text>
           <View style={styles.button}>
-            <Text style={styles.button}>{item.language}</Text>
+            <Text style={styles.button} color='textSecondary'>{item.language}</Text>
           </View>
         </View>
       </View>
       <View style={styles.flexContainer1}>
         <View style={styles.flexContainer2}>
-          <Text fontWeight='bold' style={styles.separator}>
+          <Text fontWeight='bold'  style={styles.separator}>
             {fixNumber(item.stargazersCount)}
           </Text>
           <Text>Stars</Text>
