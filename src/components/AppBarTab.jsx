@@ -1,34 +1,40 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Link } from 'react-router-native';
 
 import Text from './Text';
 
 const styles = StyleSheet.create({
-  innerText: {
-    color: 'white',
-  },
-  flexContainer: {
-    width: '90%',
+  container: {
+    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    alignItems: 'center',
+  },
+  tab: {
+    flexGrow: 0,
+    paddingHorizontal: 15,
+    paddingVertical: 20,
+    color: 'white',
   },
 });
 
 const Main = () => {
   return (
-    <View style={styles.flexContainer}>
-      <Link to='/' component={TouchableOpacity} activeOpacity={0.8}>
-        <Text style={styles.innerText} fontWeight='bold'>
-          Repositories
-        </Text>
-      </Link>
+    <View style={styles.container}>
+      <ScrollView horizontal>
+        <Link to='/' component={TouchableOpacity} activeOpacity={0.8}>
+          <Text style={styles.tab} fontWeight='bold'>
+            Repositories
+          </Text>
+        </Link>
 
-      <Link to='/sign-in' component={TouchableOpacity} activeOpacity={0.8}>
-        <Text style={styles.innerText} fontWeight='bold'>
-          Sign in
-        </Text>
-      </Link>
+        <Link to='/sign-in' component={TouchableOpacity} activeOpacity={0.8}>
+          <Text style={styles.tab} fontWeight='bold'>
+            Sign in
+          </Text>
+        </Link>
+       
+      </ScrollView>
     </View>
   );
 };
