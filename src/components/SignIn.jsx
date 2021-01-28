@@ -6,12 +6,11 @@ import * as yup from 'yup';
 
 import theme from '../theme';
 import Text from './Text';
+import useSignIn from '../hooks/useSignIn';
 
 const validationSchema = yup.object().shape({
-  username: yup.string()
-    .required('Username is required'),
-  password: yup.string()
-    .required('Password is required'),
+  username: yup.string().required('Username is required'),
+  password: yup.string().required('Password is required'),
 });
 
 const SignInForm = ({ onSubmit }) => {
@@ -75,9 +74,16 @@ const SignIn = () => {
     username: '',
     password: '',
   };
+  const [signIn, result] = useSignIn();
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+    try {
+      await signIn({ username, password });
+      console.log('Sign in data', result.data);
+    } catch (e) {
+      console.log('error when signing in:', e);
+    }
   };
   return (
     <Formik
