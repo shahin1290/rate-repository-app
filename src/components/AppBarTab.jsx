@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Link } from 'react-router-native';
+import { useApolloClient } from '@apollo/react-hooks';
 
 import theme from '../theme';
 import Text from './Text';
+import { useAuthorizedUser } from '../hooks/useAuthorizedUser';
+import { useHistory } from 'react-router-native';
+import AuthStorageContext from '../contexts/AuthStorageContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,7 +23,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const Main = () => {
+const AppBarTab = () => {
+  const { data } = useAuthorizedUser();
+  const authStorage = useContext(AuthStorageContext);
+  const apolloClient = useApolloClient();
+  const history = useHistory();
+
+  const handleLogOut = () => {
+    authStorage.removeAccessToken();
+    apolloClient.resetStore();
+    history.push('/signin');
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
@@ -29,15 +44,27 @@ const Main = () => {
           </Text>
         </Link>
 
-        <Link to='/sign-in' component={TouchableOpacity} activeOpacity={0.8}>
-          <Text style={styles.tab} fontWeight='bold'>
-            Sign in
-          </Text>
-        </Link>
-       
+        {data?.authorizedUser ? (
+          <Link
+            to='/sign-in'
+            component={TouchableOpacity}
+            onPress={handleLogOut}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.tab} fontWeight='bold'>
+              Sign out
+            </Text>
+          </Link>
+        ) : (
+          <Link to='/sign-in' component={TouchableOpacity} activeOpacity={0.8}>
+            <Text style={styles.tab} fontWeight='bold'>
+              Sign in
+            </Text>
+          </Link>
+        )}
       </ScrollView>
     </View>
   );
 };
 
-export default Main;
+export default AppBarTab;
