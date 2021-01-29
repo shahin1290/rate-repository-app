@@ -1,21 +1,20 @@
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../graphql/queries';
+import authStorage from '../utils/authStorage';
 
 const useSignIn = () => {
   const [mutate, result] = useMutation(LOGIN);
 
-  /* useEffect(() => {
-    if (result.data) {
-      const token = result.data.login.value;
-      setToken(token);
-      localStorage.setItem('phonenumbers-user-token', token);
-    }
-  }, [result.data]); // */
-
-  const signIn = ({ username, password }) => {
-    mutate({
+  const signIn = async ({ username, password }) => {
+    const { data } = mutate({
       variables: { username, password },
     });
+
+    if (data) {
+      const token = data.authorize.accessToken;
+      const auth = new authStorage();
+      await auth.setAccessToken(token);
+    }
   };
 
   return [signIn, result];
