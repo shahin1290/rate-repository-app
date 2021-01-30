@@ -3,8 +3,7 @@ import { Formik } from 'formik';
 import FormikTextInput from './FormikTextInput';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import * as yup from 'yup';
-import { useHistory } from "react-router-native";
-
+import { useHistory } from 'react-router-native';
 
 import theme from '../theme';
 import Text from './Text';
@@ -79,12 +78,11 @@ const SignIn = () => {
   const [signIn] = useSignIn();
   const history = useHistory();
 
-
   const onSubmit = async (values) => {
     const { username, password } = values;
     try {
       await signIn({ username, password });
-      history.push("/");
+      history.push('/');
     } catch (e) {
       console.log('error when signing in:', e);
     }
