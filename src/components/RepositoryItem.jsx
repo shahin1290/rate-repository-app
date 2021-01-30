@@ -51,37 +51,66 @@ const RepositoryItem = ({ item }) => {
       <View style={styles.flexContainer3}>
         <Image style={styles.logo} source={{ uri: item.ownerAvatarUrl }} />
         <View style={styles.flexContainer4}>
-          <Text fontWeight='bold' style={styles.separator}>
+          <Text
+            testID='fullName'
+            fontWeight='bold'
+            style={styles.separator}
+          >
             {' '}
             {item.fullName}
           </Text>
-          <Text style={styles.separator}> {item.description}</Text>
+          <Text testID='description' style={styles.separator}>
+            {' '}
+            {item.description}
+          </Text>
           <View style={styles.button}>
-            <Text style={styles.button} color='textSecondary'>{item.language}</Text>
+            <Text
+              testID='language'
+              style={styles.button}
+              color='textSecondary'
+            >
+              {item.language}
+            </Text>
           </View>
         </View>
       </View>
       <View style={styles.flexContainer1}>
         <View style={styles.flexContainer2}>
-          <Text fontWeight='bold'  style={styles.separator}>
+          <Text
+            testID='stargazersCount'
+            fontWeight='bold'
+            style={styles.separator}
+          >
             {fixNumber(item.stargazersCount)}
           </Text>
           <Text>Stars</Text>
         </View>
         <View style={styles.flexContainer2}>
-          <Text fontWeight='bold' style={styles.separator}>
+          <Text
+            testID='forksCount'
+            fontWeight='bold'
+            style={styles.separator}
+          >
             {fixNumber(item.forksCount)}
           </Text>
           <Text>Forks</Text>
         </View>
         <View style={styles.flexContainer2}>
-          <Text fontWeight='bold' style={styles.separator}>
+          <Text
+            testID='reviewCount'
+            fontWeight='bold'
+            style={styles.separator}
+          >
             {fixNumber(item.reviewCount)}
           </Text>
           <Text>Reviews</Text>
         </View>
         <View style={styles.flexContainer2}>
-          <Text fontWeight='bold' style={styles.separator}>
+          <Text
+            testID='ratingAverage'
+            fontWeight='bold'
+            style={styles.separator}
+          >
             {fixNumber(item.ratingAverage)}
           </Text>
           <Text>Rating</Text>
