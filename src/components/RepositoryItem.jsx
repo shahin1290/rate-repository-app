@@ -31,15 +31,13 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginBottom: 10,
   },
-  button: {
-    backgroundColor: theme.colors.primary,
-    paddingTop: 2,
-    padding: 4,
-    alignSelf: 'flex-start',
-    borderRadius: 3,
-  },
+
   separator: {
     paddingBottom: 5,
+  },
+
+  languageButton: {
+    alignSelf: 'flex-start',
   },
 });
 
@@ -51,11 +49,7 @@ const RepositoryItem = ({ item }) => {
       <View style={styles.flexContainer3}>
         <Image style={styles.logo} source={{ uri: item.ownerAvatarUrl }} />
         <View style={styles.flexContainer4}>
-          <Text
-            testID='fullName'
-            fontWeight='bold'
-            style={styles.separator}
-          >
+          <Text testID='fullName' fontWeight='bold' style={styles.separator}>
             {' '}
             {item.fullName}
           </Text>
@@ -63,12 +57,8 @@ const RepositoryItem = ({ item }) => {
             {' '}
             {item.description}
           </Text>
-          <View style={styles.button}>
-            <Text
-              testID='language'
-              style={styles.button}
-              color='textSecondary'
-            >
+          <View style={styles.languageButton}>
+            <Text testID='language' style={theme.button}>
               {item.language}
             </Text>
           </View>
@@ -86,21 +76,13 @@ const RepositoryItem = ({ item }) => {
           <Text>Stars</Text>
         </View>
         <View style={styles.flexContainer2}>
-          <Text
-            testID='forksCount'
-            fontWeight='bold'
-            style={styles.separator}
-          >
+          <Text testID='forksCount' fontWeight='bold' style={styles.separator}>
             {fixNumber(item.forksCount)}
           </Text>
           <Text>Forks</Text>
         </View>
         <View style={styles.flexContainer2}>
-          <Text
-            testID='reviewCount'
-            fontWeight='bold'
-            style={styles.separator}
-          >
+          <Text testID='reviewCount' fontWeight='bold' style={styles.separator}>
             {fixNumber(item.reviewCount)}
           </Text>
           <Text>Reviews</Text>
@@ -116,6 +98,7 @@ const RepositoryItem = ({ item }) => {
           <Text>Rating</Text>
         </View>
       </View>
+      
     </View>
   );
 };
