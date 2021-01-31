@@ -14,7 +14,7 @@ const validationSchema = yup.object().shape({
   password: yup.string().required('Password is required'),
 });
 
-const SignInForm = ({ onSubmit }) => {
+export const SignInForm = ({ onSubmit }) => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: 'white',
@@ -45,6 +45,7 @@ const SignInForm = ({ onSubmit }) => {
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <FormikTextInput
+          testID='usernameField'
           style={styles.input}
           name='username'
           placeholder='Username'
@@ -52,6 +53,7 @@ const SignInForm = ({ onSubmit }) => {
       </View>
       <View style={styles.inputContainer}>
         <FormikTextInput
+          testID='passwordField'
           style={styles.input}
           secureTextEntry={true}
           name='password'
@@ -59,7 +61,7 @@ const SignInForm = ({ onSubmit }) => {
         />
       </View>
 
-      <TouchableOpacity onPress={onSubmit} testID='submitButton'>
+      <TouchableOpacity testID='submitButton' onPress={onSubmit}>
         <View style={styles.buttonContainer}>
           <Text color='textSecondary' fontWeight='bold'>
             Sign in
@@ -70,11 +72,20 @@ const SignInForm = ({ onSubmit }) => {
   );
 };
 
+export const SignInFormContainer = ({ handleSubmit }) => {
+  const initialValues = { username: '', password: '' };
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+    </Formik>
+  );
+};
+
 const SignIn = () => {
-  const initialValues = {
-    username: '',
-    password: '',
-  };
   const [signIn] = useSignIn();
   const history = useHistory();
 
@@ -87,15 +98,7 @@ const SignIn = () => {
       console.log('error when signing in:', e);
     }
   };
-  return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-    >
-      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
-    </Formik>
-  );
+  return <SignInFormContainer handleSubmit={onSubmit} />;
 };
 
 export default SignIn;
