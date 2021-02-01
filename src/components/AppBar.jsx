@@ -47,11 +47,7 @@ const AppBar = () => {
 
         {data?.authorizedUser ? (
           <>
-            <Link
-              to='/review'
-              component={TouchableOpacity}
-              activeOpacity={0.8}
-            >
+            <Link to='/review' component={TouchableOpacity} activeOpacity={0.8}>
               <Text style={styles.tab} fontWeight='bold'>
                 Create a Review
               </Text>
@@ -68,11 +64,26 @@ const AppBar = () => {
             </Link>
           </>
         ) : (
-          <Link to='/sign-in' component={TouchableOpacity} activeOpacity={0.8}>
-            <Text style={styles.tab} fontWeight='bold'>
-              Sign in
-            </Text>
-          </Link>
+          <>
+            <Link
+              to='/sign-in'
+              component={TouchableOpacity}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.tab} fontWeight='bold'>
+                Sign in
+              </Text>
+            </Link>
+            <Link
+              to='/sign-up'
+              component={TouchableOpacity}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.tab} fontWeight='bold'>
+                Sign up
+              </Text>
+            </Link>
+          </>
         )}
       </ScrollView>
     </View>
