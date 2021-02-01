@@ -1,6 +1,6 @@
 import { useMutation, useApolloClient } from '@apollo/client';
 import { useContext } from 'react';
-import { LOGIN } from '../graphql/queries';
+import { LOGIN } from '../graphql/mutations';
 import AuthStorageContext from '../contexts/AuthStorageContext';
 
 const useSignIn = () => {
@@ -20,7 +20,7 @@ const useSignIn = () => {
     return result;
   };
 
-  return [signIn, result];
+  return signIn;
 };
 
 export default useSignIn;

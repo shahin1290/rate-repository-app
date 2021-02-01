@@ -7,14 +7,20 @@ import { useHistory } from 'react-router-native';
 
 import theme from '../theme';
 import Text from './Text';
-import useSignIn from '../hooks/useSignIn';
+import useReview from '../hooks/useReview';
 
 const validationSchema = yup.object().shape({
-  username: yup.string().required('Username is required'),
-  password: yup.string().required('Password is required'),
+  ownerName: yup.string().required('Repository owner name is required'),
+  repositoryName: yup.string().required('Repository name is required'),
+  rating: yup
+    .number()
+    .typeError('Rating must be a number')
+    .required('Rating is required')
+    .min(0, 'Rating between 0 and 100')
+    .max(100, 'Rating must be between 0 and 100'),
 });
 
-export const SignInForm = ({ onSubmit }) => {
+export const ReviewForm = ({ onSubmit }) => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: 'white',
@@ -45,26 +51,38 @@ export const SignInForm = ({ onSubmit }) => {
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <FormikTextInput
-          testID='usernameField'
           style={styles.input}
-          name='username'
-          placeholder='Username'
+          name='ownerName'
+          placeholder='Repository owner name'
         />
       </View>
       <View style={styles.inputContainer}>
         <FormikTextInput
-          testID='passwordField'
           style={styles.input}
-          secureTextEntry={true}
-          name='password'
-          placeholder='Password'
+          name='repositoryName'
+          placeholder='Repository name'
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <FormikTextInput
+          style={styles.input}
+          name='rating'
+          placeholder='Rating between 0 and 100'
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <FormikTextInput
+          style={styles.input}
+          name='text'
+          placeholder='Review'
+          multiline numberOfLines={3}
         />
       </View>
 
       <TouchableOpacity testID='submitButton' onPress={onSubmit}>
         <View style={styles.buttonContainer}>
           <Text color='textSecondary' fontWeight='bold'>
-            Sign in
+            Create a review
           </Text>
         </View>
       </TouchableOpacity>
@@ -72,33 +90,38 @@ export const SignInForm = ({ onSubmit }) => {
   );
 };
 
-export const SignInFormContainer = ({ handleSubmit }) => {
-  const initialValues = { username: '', password: '' };
+export const ReviewFormContainer = ({ handleSubmit }) => {
+  const initialValues = {
+    ownerName: '',
+    repositoryName: '',
+    rating: '',
+    text: '',
+  };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+      {({ handleSubmit }) => <ReviewForm onSubmit={handleSubmit} />}
     </Formik>
   );
 };
 
-const SignIn = () => {
-  const signIn = useSignIn();
+const Review = () => {
+  const createReview = useReview();
   const history = useHistory();
 
   const onSubmit = async (values) => {
-    const { username, password } = values;
+    const { ownerName, repositoryName, rating, text } = values;
     try {
-      await signIn({ username, password });
+      await createReview({ ownerName, repositoryName, rating, text });
       history.push('/');
     } catch (e) {
-      console.log('error when signing in:', e);
+      console.log('error when creating review:', e);
     }
   };
-  return <SignInFormContainer handleSubmit={onSubmit} />;
+  return <ReviewFormContainer handleSubmit={onSubmit} />;
 };
 
-export default SignIn;
+export default Review;

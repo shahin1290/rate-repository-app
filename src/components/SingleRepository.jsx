@@ -47,7 +47,7 @@ const SingleRepositoryItem = () => {
     return <Text>Loading repository</Text>;
   }
 
-  const repository = data.repository;
+  const repository = data?.repository;
 
   const reviewNodes = repository
     ? data.repository.reviews.edges.map((edge) => edge.node)

@@ -20,13 +20,7 @@ export const GET_REPOSITORIES = gql`
   }
 `;
 
-export const LOGIN = gql`
-  mutation authorize($username: String!, $password: String!) {
-    authorize(credentials: { username: $username, password: $password }) {
-      accessToken
-    }
-  }
-`;
+
 
 export const AUTHORIZED_USER = gql`
   query {

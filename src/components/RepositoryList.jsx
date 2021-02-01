@@ -47,7 +47,7 @@ const RepositoryList = () => {
     return <Text>Loading repositories</Text>;
   }
 
-  const repositories = data.repositories;
+  const repositories = data?.repositories;
 
   return <RepositoryListContainer repositories={repositories} />;
 };
