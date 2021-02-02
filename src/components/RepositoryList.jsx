@@ -1,4 +1,6 @@
 import React from 'react';
+import { useState } from 'react';
+
 import {
   FlatList,
   View,
@@ -7,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useHistory } from 'react-router-native';
+import RNPickerSelect from 'react-native-picker-select';
 
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
@@ -19,7 +22,53 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({ repositories }) => {
+
+export const Dropdown = ({ setOptions }) => {
+  const placeholder = {
+    label: 'Sort by',
+    color: '#9EA0A4',
+  };
+
+  return (
+    <View style={{ paddingHorizontal: 15 }}>
+      <RNPickerSelect
+        placeholder={placeholder}
+        onValueChange={(value) => {
+          setOptions(JSON.parse(value));
+        }}
+        items={[
+          {
+            label: 'Latest Repositories',
+            value: JSON.stringify({
+              orderBy: 'CREATED_AT',
+              orderDirection: 'DESC',
+            }),
+          },
+          {
+            label: 'Highest rated Repositories',
+            value: JSON.stringify({
+              orderBy: 'RATING_AVERAGE',
+              orderDirection: 'DESC',
+            }),
+          },
+          {
+            label: 'Lowest rated Repositories',
+            value: JSON.stringify({
+              orderBy: 'RATING_AVERAGE',
+              orderDirection: 'ASC',
+            }),
+          },
+        ]}
+      />
+    </View>
+  );
+};
+
+export const RepositoryListContainer = ({
+  repositories,
+  setOptions,
+  options,
+}) => {
   const history = useHistory();
 
   const repositoryNodes = repositories
@@ -30,6 +79,9 @@ export const RepositoryListContainer = ({ repositories }) => {
     <FlatList
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
+      ListHeaderComponent={() => (
+        <Dropdown setOptions={setOptions} options={options} />
+      )}
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => history.push(`/${item.id}`)}>
           <RepositoryItem item={item} />
@@ -41,7 +93,12 @@ export const RepositoryListContainer = ({ repositories }) => {
 };
 
 const RepositoryList = () => {
-  const { data, loading } = useRepositories();
+  const [options, setOptions] = useState({
+    orderBy: 'CREATED_AT',
+    orderDirection: 'DESC',
+  });
+
+  const { data, loading } = useRepositories(options);
 
   if (loading) {
     return <Text>Loading repositories</Text>;
@@ -49,7 +106,13 @@ const RepositoryList = () => {
 
   const repositories = data?.repositories;
 
-  return <RepositoryListContainer repositories={repositories} />;
+  return (
+    <RepositoryListContainer
+      repositories={repositories}
+      setOptions={setOptions}
+      options={options}
+    />
+  );
 };
 
 export default RepositoryList;

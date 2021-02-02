@@ -1,26 +1,27 @@
 import { gql } from 'apollo-boost';
 
 export const GET_REPOSITORIES = gql`
-  query {
-    repositories {
+  query getRepositories(
+    $orderBy: AllRepositoriesOrderBy!
+    $orderDirection: OrderDirection!
+  ) {
+    repositories(orderBy: $orderBy, orderDirection: $orderDirection) {
       edges {
         node {
           id
           fullName
-          ratingAverage
-          reviewCount
-          stargazersCount
-          forksCount
-          ownerAvatarUrl
           description
           language
+          forksCount
+          stargazersCount
+          ratingAverage
+          reviewCount
+          ownerAvatarUrl
         }
       }
     }
   }
 `;
-
-
 
 export const AUTHORIZED_USER = gql`
   query {
