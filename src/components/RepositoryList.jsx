@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useHistory } from 'react-router-native';
-import RNPickerSelect from 'react-native-picker-select';
+import { Button, Menu, Provider } from 'react-native-paper';
 
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
@@ -22,53 +22,59 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
+const Dropdown = ({ setOptions }) => {
+  const [visible, setVisible] = React.useState(false);
 
-export const Dropdown = ({ setOptions }) => {
-  const placeholder = {
-    label: 'Sort by',
-    color: '#9EA0A4',
-  };
+  const openMenu = () => setVisible(true);
+
+  const closeMenu = () => setVisible(false);
 
   return (
-    <View style={{ paddingHorizontal: 15 }}>
-      <RNPickerSelect
-        placeholder={placeholder}
-        onValueChange={(value) => {
-          setOptions(JSON.parse(value));
-        }}
-        items={[
-          {
-            label: 'Latest Repositories',
-            value: JSON.stringify({
+    <View
+      style={{
+        paddingTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+      }}
+    >
+      <Menu
+        visible={visible}
+        onDismiss={closeMenu}
+        anchor={<Button onPress={openMenu}>Select an item...</Button>}
+      >
+        <Menu.Item
+          onPress={() =>
+            setOptions({
               orderBy: 'CREATED_AT',
               orderDirection: 'DESC',
-            }),
-          },
-          {
-            label: 'Highest rated Repositories',
-            value: JSON.stringify({
+            })
+          }
+          title='Latest Repositories'
+        />
+        <Menu.Item
+          onPress={() =>
+            setOptions({
               orderBy: 'RATING_AVERAGE',
               orderDirection: 'DESC',
-            }),
-          },
-          {
-            label: 'Lowest rated Repositories',
-            value: JSON.stringify({
+            })
+          }
+          title='Highest rated Repositories'
+        />
+        <Menu.Item
+          onPress={() =>
+            setOptions({
               orderBy: 'RATING_AVERAGE',
               orderDirection: 'ASC',
-            }),
-          },
-        ]}
-      />
+            })
+          }
+          title='Lowest rated Repositories'
+        />
+      </Menu>
     </View>
   );
 };
 
-export const RepositoryListContainer = ({
-  repositories,
-  setOptions,
-  options,
-}) => {
+export const RepositoryListContainer = ({ repositories, setOptions }) => {
   const history = useHistory();
 
   const repositoryNodes = repositories
@@ -79,9 +85,8 @@ export const RepositoryListContainer = ({
     <FlatList
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
-      ListHeaderComponent={() => (
-        <Dropdown setOptions={setOptions} options={options} />
-      )}
+      ListHeaderComponent={() => <Dropdown setOptions={setOptions} />}
+      stickyHeaderIndices={[0]}
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => history.push(`/${item.id}`)}>
           <RepositoryItem item={item} />
@@ -107,11 +112,13 @@ const RepositoryList = () => {
   const repositories = data?.repositories;
 
   return (
-    <RepositoryListContainer
-      repositories={repositories}
-      setOptions={setOptions}
-      options={options}
-    />
+    <Provider>
+      <RepositoryListContainer
+        repositories={repositories}
+        setOptions={setOptions}
+        options={options}
+      />
+    </Provider>
   );
 };
 
