@@ -41,7 +41,12 @@ export const ItemSeparator = () => <View style={styles.separator} />;
 
 const SingleRepositoryItem = () => {
   const { id } = useParams();
-  const { data, loading } = useRepository(id);
+  const { data, loading, fetchMore } = useRepository(id);
+
+  const onEndReach = () => {
+    console.log('You have reached the end of the list');
+    fetchMore();
+  };
 
   if (loading) {
     return <Text>Loading repository</Text>;
@@ -74,6 +79,8 @@ const SingleRepositoryItem = () => {
     <FlatList
       data={reviewNodes}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => <ReviewItem review={item} />}
       ListHeaderComponent={() => (

@@ -111,6 +111,8 @@ export class RepositoryListContainer extends React.Component {
         data={this.props.repositories}
         ItemSeparatorComponent={ItemSeparator}
         ListHeaderComponent={this.renderHeader}
+        onEndReached={this.props.onEndReach}
+        onEndReachedThreshold={0.5}
         stickyHeaderIndices={[0]}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -135,9 +137,14 @@ const RepositoryList = () => {
 
   const history = useHistory();
 
-  const { data, loading } = useRepositories(options, {
+  const { data, loading, fetchMore } = useRepositories(options, {
     searchKeyword: searchDebounce,
   });
+
+  const onEndReach = () => {
+    console.log('You have reached the end of the list');
+    fetchMore();
+  };
 
   if (loading) {
     return <Text>Loading repositories</Text>;
@@ -157,6 +164,7 @@ const RepositoryList = () => {
         setSearchKeyword={setSearchKeyword}
         searchKeyword={searchKeyword}
         history={history}
+        onEndReach={onEndReach}
       />
     </Provider>
   );
