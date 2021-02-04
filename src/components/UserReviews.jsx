@@ -4,6 +4,7 @@ import { FlatList, View, StyleSheet, Text } from 'react-native';
 import ReviewItem from './ReviewItem';
 
 import useReviews from '../hooks/useReviews';
+import useDeleteReview from '../hooks/useDeleteReview';
 
 const styles = StyleSheet.create({
   separator: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const ReviewListContainer = ({ reviews }) => {
+const ReviewListContainer = ({ reviews, deleteReview }) => {
   const reviewNodes = reviews ? reviews.edges.map((edge) => edge.node) : [];
 
   return (
@@ -22,16 +23,29 @@ const ReviewListContainer = ({ reviews }) => {
       ItemSeparatorComponent={ItemSeparator}
       keyExtractor={(item) => item.id}
       onEndReachedThreshold={0.5}
-      renderItem={({ item }) => <ReviewItem review={item} username={false} />}
+      renderItem={({ item }) => (
+        <ReviewItem
+          review={item}
+          username={false}
+          deleteReview={deleteReview}
+        />
+      )}
     />
   );
 };
 
 const UserReviews = () => {
-  const { reviews, loading } = useReviews({ includeReviews: true });
+  const { reviews, loading, refetch } = useReviews({ includeReviews: true });
+
+  const removeReview = useDeleteReview();
+
+  const deleteReview = (id) => {
+    removeReview(id);
+    refetch();
+  };
   if (loading) return <Text>loading</Text>;
 
-  return <ReviewListContainer reviews={reviews} />;
+  return <ReviewListContainer reviews={reviews} deleteReview={deleteReview} />;
 };
 
 export default UserReviews;
