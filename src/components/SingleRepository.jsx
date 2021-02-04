@@ -1,7 +1,9 @@
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { useParams } from 'react-router-native';
 import { format } from 'date-fns';
 import React from 'react';
+import * as Linking from 'expo-linking';
+
 import Text from './Text';
 import theme from '../theme';
 import useRepository from '../hooks/useRepository';
@@ -86,6 +88,11 @@ const SingleRepositoryItem = () => {
       ListHeaderComponent={() => (
         <View>
           <RepositoryItem item={repository} />
+          <TouchableWithoutFeedback onPress={() => Linking.openURL(repository.url)}>
+          <Text testID='language' style={theme.button}>
+            Open in Github
+          </Text>
+        </TouchableWithoutFeedback>
           <ItemSeparator />
         </View>
       )}
