@@ -52,6 +52,15 @@ const AppBar = () => {
                 Create a Review
               </Text>
             </Link>
+            <Link
+              to='/my-reviews'
+              component={TouchableOpacity}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.tab} fontWeight='bold'>
+                My reviews
+              </Text>
+            </Link>
 
             <Link
               component={TouchableOpacity}

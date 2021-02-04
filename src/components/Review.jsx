@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-native';
 
 import theme from '../theme';
 import Text from './Text';
-import useReview from '../hooks/useReview';
+import useCreateReview from '../hooks/useCreateReview';
 
 const validationSchema = yup.object().shape({
   ownerName: yup.string().required('Repository owner name is required'),
@@ -109,7 +109,7 @@ export const ReviewFormContainer = ({ handleSubmit }) => {
 };
 
 const Review = () => {
-  const createReview = useReview();
+  const createReview = useCreateReview();
   const history = useHistory();
 
   const onSubmit = async (values) => {

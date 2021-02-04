@@ -40,7 +40,7 @@ const useRepositories = (options, obj) => {
     });
   };
 
-  return { data, loading, fetchMore: handleFetchMore, ...result };
+  return { repositories: data ? data.repositories : undefined, loading, fetchMore: handleFetchMore, ...result };
 };
 
 export default useRepositories;

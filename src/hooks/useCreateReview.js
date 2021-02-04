@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-native';
 
 import { CREATE_REVIEW } from '../graphql/mutations';
 
-const useReview = () => {
+const useCreateReview = () => {
   const history = useHistory();
 
   const [mutate] = useMutation(CREATE_REVIEW);
@@ -18,4 +18,4 @@ const useReview = () => {
   return createReview;
 };
 
-export default useReview;
+export default useCreateReview;

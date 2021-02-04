@@ -5,7 +5,6 @@ import {
   FlatList,
   View,
   StyleSheet,
-  Text,
   TouchableOpacity,
 } from 'react-native';
 import { useHistory } from 'react-router-native';
@@ -137,7 +136,7 @@ const RepositoryList = () => {
 
   const history = useHistory();
 
-  const { data, loading, fetchMore } = useRepositories(options, {
+  const { repositories,  fetchMore } = useRepositories(options, {
     searchKeyword: searchDebounce,
   });
 
@@ -146,11 +145,7 @@ const RepositoryList = () => {
     fetchMore();
   };
 
-  if (loading) {
-    return <Text>Loading repositories</Text>;
-  }
 
-  const repositories = data?.repositories;
 
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)

@@ -1,6 +1,5 @@
-import { View, FlatList, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, FlatList, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import { useParams } from 'react-router-native';
-import { format } from 'date-fns';
 import React from 'react';
 import * as Linking from 'expo-linking';
 
@@ -8,32 +7,9 @@ import Text from './Text';
 import theme from '../theme';
 import useRepository from '../hooks/useRepository';
 import RepositoryItem from './RepositoryItem';
+import ReviewItem from './ReviewItem';
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.colors.colorWhite,
-    paddingVertical: 20,
-    paddingHorizontal: 23,
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  ratingCircle: {
-    borderColor: theme.colors.primary,
-    borderWidth: 3,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ratingText: {
-    fontSize: 25,
-    color: theme.colors.primary,
-  },
-  reviewDate: {
-    marginBottom: 10,
-  },
-  textContainer: { paddingLeft: 18, width: '80%' },
   separator: {
     height: 15,
   },
@@ -60,23 +36,6 @@ const SingleRepositoryItem = () => {
     ? data.repository.reviews.edges.map((edge) => edge.node)
     : [];
 
-  const ReviewItem = ({ review }) => {
-    return (
-      <View style={styles.container}>
-        <View style={styles.ratingCircle}>
-          <Text style={styles.ratingText}>{review.rating}</Text>
-        </View>
-
-        <View style={styles.textContainer}>
-          <Text fontWeight='bold'>{review.user.username}</Text>
-          <Text style={styles.reviewDate}>
-            {format(new Date(review.createdAt), 'dd.MM.yyyy')}
-          </Text>
-          <Text>{review.text}</Text>
-        </View>
-      </View>
-    );
-  };
   return (
     <FlatList
       data={reviewNodes}
@@ -84,15 +43,17 @@ const SingleRepositoryItem = () => {
       onEndReached={onEndReach}
       onEndReachedThreshold={0.5}
       keyExtractor={({ id }) => id}
-      renderItem={({ item }) => <ReviewItem review={item} />}
+      renderItem={({ item }) => <ReviewItem review={item} username={true} />}
       ListHeaderComponent={() => (
         <View>
           <RepositoryItem item={repository} />
-          <TouchableWithoutFeedback onPress={() => Linking.openURL(repository.url)}>
-          <Text testID='language' style={theme.button}>
-            Open in Github
-          </Text>
-        </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => Linking.openURL(repository.url)}
+          >
+            <Text testID='language' style={theme.button}>
+              Open in Github
+            </Text>
+          </TouchableWithoutFeedback>
           <ItemSeparator />
         </View>
       )}
